@@ -1,0 +1,400 @@
+﻿Collection framework provides flexibility, performance and robustness.
+
+HastTable/Vector = Asyncronize
+
+Set(Hashset,TreeSet) -> unique elements
+List(ArrayList, LinkedList, Vector) -> Ordered Sequence of elements can contain duplicate values, Index Based
+Map(HashMap,TreeMap, HashTable) ->  Key, Value -> Key have to be unique and not null
+
+Set<Product> lst = new HashSet<Product>();
+List<Product> lst = new ArrayList<Product>();
+
+=== Both are interfaces ====
+
+Comparable -> compareTo(null)
+Comparator -> Comapare(Object obj1,Object obj2)
+
+============================
+ConcurrentModificationException (iterator.hasNext())-> one thread changes the collection while another thread is traversing
+
+============================
+
+1. Mutable object – You can change the states and fields after the object is created. For examples: StringBuilder,StringBuffer, java.util.Date and etc.
+2. Immutable object – You cannot change anything after the object is created. For examples: String, boxed primitive objects like Integer, Long and etc.
+
+============================
+Shallow (==) -> return true, if the variable refrence points to the same object in memory
+Deep (equals(Object b)) -> returns true, if object have same attributes
+
+============================
+Pass-by-Refrence/Pass-by-pointer -> will get copy of that data, pass-by-values
+Refrence -> Modify the original object through copied refrence
+Primitive -> modifies the copy k but not the original
+============================
+Serialization -> is a process of reading or writing an object. saving object state to a sequence of bytes. Affect performance
+
+Note : Transient variable cannot be serialzed
+
+Java Serial Version ID -> java.io.InvalidClassException
+============================
+
+Java I/O is defined in terms of abstract concept "stream", which is sequence of data.
+1 : Byte Stream(8 bit) InputStream and OutputStream
+2 : Character Stream (16 bit) Reader and Writer
+
+============================
+
+final class can't be extended
+final method can't be override
+final variable can't change
+----------------------------------------------
+Abstract class can't be instantiated
+
+============================
+
+volatile modifier modified simultaneously by other threads.
+
+volatile int number;
+
+============================
+
+Object to heap(Not Thread Safe)
+Value to stack(Thread Safe)
+============================
+
+Type Casting means -> one type to another type.
+
+============================
+
+java -verbose:gc //reports on each garbage collection event.
+
+============================
+
+Error : dynamic linking failure in virtual machine occurs.
+Exceptions : throw and catch
+Runtime Exceptions(Uncheck Exception) : exception that occur within the Java Virtual Machine (During runtime)
+
+============================
+Process is an execution of a program (Multiple Threads)
+Thread is a single execution sequence within the process.
+
+Thread Class 
+Runnable Interface
+
+State of Thread (Runable, Running, Waiting, Sleeping, Blocked in (I/O), Block on sync, Dead)
+
+Deamon Thread : Background Thread
+=================================================
+
+Observer(Notify) : any object that wishes to be notified when the state of another object changes.
+Observable(Consume) : any object whose state may be of interest, and in whom another object may register an interest.
+
+===================================================
+
+Singleton
+Factory
+
+============================
+Improve Performance 
+
+1: Pool Valueable system resource  : threads, database connections, socket connects etc
+2: Minimize network overheads : 
+
+============================
+Refresh your cache
+1: Timed cache : strategy where the cache can be relenished periodically (eg : 30 min, hours)
+2: Dirty check : your application is the only one which can mutate
+
+============================
+Refresh you cache when database is shared by more than one application
+
+1: Database triggers
+2: XML Messaging 
+3: Optimize your I/O operations
+
+
+============================
+Detecting memory leaks
+1: JProbe 
+2: OptimizeIt
+
+Operating System 
+
+UNIX: PS, VMSTAT, IOSTAT, NETSTAT
+=============================
+
+Dr. Watson/Core Dump : OutOfMemoryError
+Due to Heap Management
+java -Xms1024M -Xmx1024M
+java -XX:PermSize=256M -XX:MaxPermSize=256M
+
+=============================
+Component : Applets, Client Side Java Code, JSP, Servlet, Session Beans, War,Jar, Resource adapters
+Service (is a component which can be accssed remotely) : Webservice, Msg
+
+=============================
+
+Service Oriented Architecture (SOA)
+1: Component based Development
+2: loosly coupled
+3: Greater Code Resuse
+4: Code is not tied to particular Database
+
+============================
+Session traking use cookies by default but if cookies are turned off use : Jsessionid=ADFAS#!@$#%FGSD123123123adsf
+
+============================
+
+Servlet Life-Cycle
+
+int()
+service()
+destroy()
+
+============================
+
+HTTPServlet : HTTP Protocols
+GenericServlet : Not use HTTP
+
+============================
+
+1 : Class.forName("")
+2 : Connection con = DriverManager.getConnection("");
+3 : Statement stmt = con.createStatement();
+4 : ResultSet rs = stmt.executeQuery("Select * from TEST");
+5 : while(rs.next()) rs.getString("col1"); 
+
+============================
+Statement 
+PreparedStatement -> Complied
+
+============================
+
+Association - I have a relationship with an object. Foo uses Bar
+
+public class Foo { 
+    void Baz(Bar bar) {
+    } 
+};
+
+--------------------------------------
+Aggregation - I have an object which I've borrowed from someone else. When Foo dies, Bar may live on.
+
+public class Foo { 
+    private Bar bar; 
+    Foo(Bar bar) { 
+       this.bar = bar; 
+    }
+}
+
+--------------------------------------
+Composition - I own an object and I am responsible for its lifetime. When Foo dies, so does Bar
+
+public class Foo {
+    private Bar bar = new Bar(); 
+}
+
+============================
+Java Process in Unix : ps -def | grep java
+kill thread :  kill -3 <process-id>
+unix stat tools/commands like : jvmstat, vmstat, iostat
+active connection  : netstat -a | grep EST
+Drive Statistics : iostat -E
+cat file1.txt
+du -k
+
+
+==================================================
+
+The cascade types supported by the Java Persistence Architecture are as below:
+
+CascadeType.PERSIST : cascade type presist means that save() or persist() operations cascade to related entities.
+CascadeType.MERGE : cascade type merge means that related entities are merged when the owning entity is merged.
+CascadeType.REFRESH : cascade type refresh does the same thing for the refresh() operation.
+CascadeType.REMOVE : cascade type remove removes all related entities association with this setting when the owning entity is deleted.
+CascadeType.DETACH : cascade type detach detaches all related entities if a “manual detach” occurs.
+CascadeType.ALL : cascade type all is shorthand for all of the above cascade operations.
+
+
+==================================================
+FetchType.EAGER : tells Hibernate to get all elements of a relationship when selecting the root entity
+FetchType.LAZY: tells Hibernate to only fetch the related entities from the database when you use the relationship
+
+
+Note: Hibernate handles the lazy initialization transparently and fetches the OrderItem entities as soon as the getter method gets called.
+
+
+==================================================
+One-to-One
+==================================================
+CREATE TABLE author (
+  author_id int(11) NOT NULL AUTO_INCREMENT,
+  name 		varchar(45) 	NOT NULL,
+  email varchar(45) NOT NULL,
+  PRIMARY KEY (author_id)
+);
+  
+CREATE TABLE book (
+  book_id int(11) NOT NULL AUTO_INCREMENT,
+  title varchar(128) NOT NULL,
+  description varchar(512) NOT NULL,
+  published date NOT NULL,
+  author_id int(11) NOT NULL,
+  PRIMARY KEY (book_id),
+  KEY author_fk (author_id),
+  CONSTRAINT author_fk FOREIGN KEY (author_id) REFERENCES author (author_id)
+);
+==================================================
+@Entity
+@Table(name = "author")
+public class Author {
+ 
+    @Id
+    @GeneratedValue
+    @Column(name = "author_id")
+    private long id;
+ 
+    @Column(name = "name")
+    private String name;
+ 
+    @Column(name = "email")
+    private String email;
+ 
+    public Author() { }
+ 
+    public Author(String name, String email) {
+        this.name = name;
+        this.email = email;
+    }
+}
+
+@Entity
+@Table(name = "book")
+public class Book {
+ 
+    @Id
+    @GeneratedValue
+    @Column(name = "book_id")
+    private long id;
+ 
+    @Column(name = "title")
+    private String title;
+ 
+    @Column(name = "description")
+    private String description;
+ 
+    @Column(name = "published")
+    private Date publishedDate;
+ 
+    @JoinColumn(name = "author_id")
+    @OneToOne(cascade = CascadeType.ALL)
+    private Author author;
+ 
+
+    public Author getAuthor() {
+        return author;
+    }
+ 
+    public void setAuthor(Author author) {
+        this.author = author;
+    }
+}
+
+=============================================
+One-to-Many or Many to One
+=============================================
+@Entity
+public class Item {
+     
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "fk_order")
+    private PurchaseOrder order;
+}    
+@Entity
+public class PurchaseOrder {
+     
+    @OneToMany(mappedBy = "order")
+    private List<Item> items = new ArrayList<Item>();
+}
+=============================================
+Many-to-Many
+=============================================
+@Entity
+@Table(name = "Employee")
+public class Employee { 
+    // ...
+  
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(
+        name = "Employee_Project", 
+        joinColumns = { @JoinColumn(name = "employee_id") }, 
+        inverseJoinColumns = { @JoinColumn(name = "project_id") }
+    )
+    Set<Project> projects = new HashSet<>();
+    
+    // standard constructor/getters/setters
+}
+@Entity
+@Table(name = "Project")
+public class Project {    
+    // ...  
+  
+    @ManyToMany(mappedBy = "projects")
+    private Set<Employee> employees = new HashSet<>();
+     
+    // standard constructors/getters/setters   
+}
+
+================================
+1st Level Cache : Session Object (Default)
+2nd Level Cache : (EHCache and Infinispan)Enable through Configuration (Disabled by default)
+3rd Query Cache : Cache Resultset of a query
+
+There are 3 Level of Cache in Hibernate 
+-> Session Level
+-> SessionFactory Level
+-> Query Level
+
+================================
+
+Get() -> to retrieve data that doesn’t exists, it returns null.
+Load() -> we are able to print the id but as soon as we try to access other fields, it fires database query and throws 
+
+=================
+https://www.java4s.com/hibernate/hibernate-left-join-hibernate-left-join-example/
+=================
+
+
+SELECT *
+FROM Employee Emp1
+WHERE (N-1) = (
+               SELECT COUNT(DISTINCT(Emp2.Salary))
+               FROM Employee Emp2
+               WHERE Emp2.Salary > Emp1.Salary
+               )
+-----------------------------
+ SELECT EmpID, EmpName, EmpSalary,
+           RN = ROW_NUMBER() OVER (ORDER BY EmpSalary DESC)
+    FROM dbo.Salary
+-----------------------------
+SELECT TOP 1 salary
+FROM (
+      SELECT DISTINCT TOP n salary
+      FROM employee
+      ORDER BY salary DESC
+      ) a
+ORDER BY salary
+
+
+=============================
+import java.util.Arrays;
+Arrays.sort(data, Collections.reverseOrder());
+
+Arrays.sort(W, Comparator.comparingInt(String::length));
+
+
+
+
+
+
+
