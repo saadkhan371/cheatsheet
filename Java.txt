@@ -1,4 +1,69 @@
-﻿Collection framework provides flexibility, performance and robustness.
+﻿Abstraction is a process of hiding the implementation details and showing only functionality to the user.
+
+There are two ways to achieve abstraction in java
+-> Abstract class (0 to 100%)
+-> Interface (100%)
+
+
+abstract classes
+
+-> You want to share code among several closely related classes.
+-> You expect that classes that extend your abstract class have many common methods or fields or require access modifiers other than public (such as protected and private).
+-> You want to declare non-static or non-final fields. This enables you to define methods that can access and modify the state of the object to which they belong.
+
+Interface
+-> You expect that unrelated classes would implement your interface. For example, the interfaces Comparable and Cloneable are implemented by many unrelated classes.
+-> You want to specify the behavior of a particular data type, but not concerned about who implements its behavior.
+-> You want to take advantage of multiple inheritances.
+
+
+=============================
+Polymorphism -> compile-time polymorphism and (Runtime polymorphism or Dynamic Method Dispatch)
+Before Learn Polymorphism -> A a=new B();//upcasting  
+
+Runtime Polymorphism Example: 
+class Bank{  
+	float getRateOfInterest(){return 0;}  
+}  
+class SBI extends Bank{  
+	float getRateOfInterest(){return 8.4f;}  
+}  
+class ICICI extends Bank{  
+	float getRateOfInterest(){return 7.3f;}  
+}  
+class AXIS extends Bank{  
+	float getRateOfInterest(){return 9.7f;}  
+}  
+class TestPolymorphism{  
+	public static void main(String args[]){  
+		Bank b;  
+		b=new SBI();  
+		System.out.println("SBI Rate of Interest: "+b.getRateOfInterest());  
+		b=new ICICI();  
+		System.out.println("ICICI Rate of Interest: "+b.getRateOfInterest());  
+		b=new AXIS();  
+		System.out.println("AXIS Rate of Interest: "+b.getRateOfInterest());  
+	}  
+}  
+
+=============================
+
+Connecting a method call to the method body is known as binding.
+
+There are two types of binding
+-> Static Binding (also known as Early Binding).
+-> Dynamic Binding (also known as Late Binding).
+
+
+When type of the object is determined at compiled time(by the compiler), it is known as static binding.
+
+(Inheritance A : B -> A a = new B();)When type of the object is determined at run-time, it is known as dynamic binding.
+
+=============================
+Collection framework provides flexibility, performance and robustness.
+
+Asynchronize = Not-Thread Safe
+Synchronize  = Thread Safe
 
 HastTable/Vector = Asyncronize
 
@@ -8,6 +73,9 @@ Map(HashMap,TreeMap, HashTable) ->  Key, Value -> Key have to be unique and not 
 
 Set<Product> lst = new HashSet<Product>();
 List<Product> lst = new ArrayList<Product>();
+Map map=new HashMap();  
+map.put(1,"Object1");
+
 
 === Both are interfaces ====
 
@@ -23,8 +91,8 @@ ConcurrentModificationException (iterator.hasNext())-> one thread changes the co
 2. Immutable object – You cannot change anything after the object is created. For examples: String, boxed primitive objects like Integer, Long and etc.
 
 ============================
-Shallow (==) -> return true, if the variable refrence points to the same object in memory
-Deep (equals(Object b)) -> returns true, if object have same attributes
+Shallow (==) -> return true, if the variable refrence points to the same object in memory   -> Fast
+Deep (equals(Object b)) -> returns true, if object have same attributes						-> Slow/Memory Inexpensive
 
 ============================
 Pass-by-Refrence/Pass-by-pointer -> will get copy of that data, pass-by-values
@@ -49,7 +117,7 @@ final method can't be override
 final variable can't change
 ----------------------------------------------
 Abstract class can't be instantiated
-
+Interfaces cannot be instantiated, but rather are implemented
 ============================
 
 volatile modifier modified simultaneously by other threads.
@@ -63,6 +131,34 @@ Value to stack(Thread Safe)
 ============================
 
 Type Casting means -> one type to another type.
+============================
+Covariant Return Type
+
+The covariant return type specifies that the return type may vary in the same direction as the subclass.
+
+class A{  
+	A get(){return this;}  
+}  
+  
+class B1 extends A{  
+	B1 get(){
+		return this;
+	}  
+	void message(){
+		System.out.println("welcome to covariant return type");
+	}  
+  
+	public static void main(String args[]){  
+		new B1().get().message();  
+	}  
+}  
+
+============================
+
+Usage of Java super Keyword
+-> super can be used to refer immediate parent class instance variable.
+-> super can be used to invoke immediate parent class method.
+-> super() can be used to invoke immediate parent class constructor.
 
 ============================
 
@@ -187,6 +283,12 @@ public class Foo {
     }
 }
 
+
+-> When use Aggregation?
+-> Code reuse is also best achieved by aggregation when there is no is-a relationship.
+-> Inheritance should be used only if the relationship is-a is maintained throughout the lifetime of the objects involved; 
+otherwise, aggregation is the best choice.
+
 --------------------------------------
 Composition - I own an object and I am responsible for its lifetime. When Foo dies, so does Bar
 
@@ -244,7 +346,7 @@ CREATE TABLE book (
   KEY author_fk (author_id),
   CONSTRAINT author_fk FOREIGN KEY (author_id) REFERENCES author (author_id)
 );
-==================================================
+
 @Entity
 @Table(name = "author")
 public class Author {
@@ -300,6 +402,58 @@ public class Book {
     }
 }
 
+
+XML BASED : 
+
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 25 April 2011 7:52:33 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+	<class name="com.mkyong.library.Author" table="author" catalog="mkyongdb">
+		<id name="author_id" type="java.lang.Integer">
+			<column name="author_id" />
+			<generator class="identity" />
+		</id>
+		<property name="name" type="string">
+			<column name="name" length="10" not-null="true" />
+		</property>
+		<property name="email" type="string">
+			<column name="email" length="20" not-null="true" />
+		</property>
+		<one-to-one name="stockDetail" class="com.mkyong.stock.StockDetail" cascade="save-update"></one-to-one>
+	</class>
+</hibernate-mapping>
+
+<hibernate-mapping>
+	<class name="com.mkyong.library.Book" table="book" catalog="mkyongdb">	
+		<id name="book_id" type="java.lang.Integer">
+			<column name="book_id" />
+			<generator class="identity" />
+		</id>	
+		<id name="author_id" type="java.lang.Integer">
+			<column name="author_id" />
+			<generator class="foreign">
+				<param name="property">author</param>
+			</generator>
+		</id>
+		<one-to-one name="author" class="com.mkyong.library.Author" constrained="true" cascade="all"></one-to-one>
+		
+		<property name="title" type="string">
+			<column name="title" length="100" not-null="true" />
+		</property>
+		<property name="description" type="string">
+			<column name="description" not-null="true" />
+		</property>
+		<property name="published" type="string">
+			<column name="published" not-null="true" />
+		</property>
+	</class>
+</hibernate-mapping>
+
+
+==================================================
+
 =============================================
 One-to-Many or Many to One
 =============================================
@@ -316,6 +470,39 @@ public class PurchaseOrder {
     @OneToMany(mappedBy = "order")
     private List<Item> items = new ArrayList<Item>();
 }
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="net.codejava.hibernate">
+    <class name="Item" table="Item">
+        <id name="id" column="Item_ID">
+            <generator class="native"/>
+        </id>
+        <property name="name" column="NAME" />
+ 
+        <set name="products" inverse="true" cascade="all">
+            <key column="CATEGORY_ID" not-null="true" />
+            <one-to-many class="Product"/>
+        </set>
+    </class> 
+</hibernate-mapping>
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="net.codejava.hibernate">
+    <class name="PurchaseOrder" table="PurchaseOrder">
+        <id name="id" column="PurchaseOrder_ID">
+            <generator class="native"/>
+        </id>
+         
+        <many-to-one name="Item" class="Item" column="Item_ID" not-null="true"/>
+    </class> 
+</hibernate-mapping>
+
+
 =============================================
 Many-to-Many
 =============================================
@@ -345,15 +532,86 @@ public class Project {
     // standard constructors/getters/setters   
 }
 
-================================
-1st Level Cache : Session Object (Default)
-2nd Level Cache : (EHCache and Infinispan)Enable through Configuration (Disabled by default)
-3rd Query Cache : Cache Resultset of a query
 
-There are 3 Level of Cache in Hibernate 
--> Session Level
--> SessionFactory Level
--> Query Level
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.mkyong.stock.Employee" table="Employee" catalog="mkyongdb">
+        <set name="project" table="Project"  inverse="false" lazy="true" fetch="select" cascade="all" >
+            <key>
+                <column name="Employee_ID" not-null="true" />
+            </key>
+            <many-to-many entity-name="com.mkyong.stock.Project">
+                <column name="Project_ID" not-null="true" />
+            </many-to-many>
+        </set>
+    </class>
+</hibernate-mapping>
+
+
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.mkyong.stock.Project" table="Project" catalog="mkyongdb">
+        <set name="employee" table="Employee" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="Project_ID" not-null="true" />
+            </key>
+            <many-to-many entity-name="com.mkyong.stock.Employee">
+                <column name="Employee_ID" not-null="true" />
+            </many-to-many>
+        </set>
+    </class>
+</hibernate-mapping>
+
+
+
+================================
+There are 2 Level of Cache in Hibernate 
+-> Session Level		-> The first level cache is the session cache. Objects are cached within the current session and they are only alive until the session is closed.
+-> SessionFactory Level	-> The second level cache exists as long as the session factory is alive. Keep in mind that in case of Hibernate, second level cache is not a tree of objects; object instances are not cached, instead it stores attribute values.
+-> Query Level			
+
+-->	(EHCache and Infinispan)Enable through Configuration (Disabled by default)
+-->	Cache Resultset of a query
+
+
+@Configuration
+public class HibernateConfiguration {
+ 
+ @Value("#{dataSource}")
+ private DataSource dataSource;
+ 
+ @Bean
+ public AnnotationSessionFactoryBean sessionFactoryBean() {
+  Properties props = new Properties();
+  props.put("hibernate.dialect", EnhancedMySQL5HibernateDialect.class.getName());
+  props.put("hibernate.format_sql", "true");
+  props.put("hibernate.show_sql", "true");
+  props.put("hibernate.cache.provider_class", "org.hibernate.cache.EhCacheProvider");
+  props.put("hibernate.cache.use_structured_entries", "true");
+  props.put("hibernate.cache.use_query_cache", "true");
+  props.put("hibernate.cache.use_second_level_cache", "true");
+  props.put("hibernate.hbm2ddl.auto", "validate");
+ 
+  AnnotationSessionFactoryBean bean = new AnnotationSessionFactoryBean();
+  bean.setAnnotatedClasses(new Class[]{Dna.class});  
+  bean.setHibernateProperties(props);
+  bean.setDataSource(this.dataSource);
+  bean.setSchemaUpdate(true);
+  return bean;
+ }
+ 
+}
+
+@Entity(name="dna")
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+public class Dna {
+....
+}
 
 ================================
 
@@ -391,6 +649,12 @@ import java.util.Arrays;
 Arrays.sort(data, Collections.reverseOrder());
 
 Arrays.sort(W, Comparator.comparingInt(String::length));
+
+
+
+============================
+
+
 
 
 
